@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Resume Analyser</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            <img src="jk-logo.png" alt="JK Logo">
+            <span>AI Resume Analyser</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#analyser">Analyse</a>
+            <a href="#about">About</a>
+        </div>
+
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <h1>
+                Better Resume.
+                <span>Brighter Future.</span>
+            </h1>
+
+            <p>
+                Analyse your resume, discover your strengths,
+                identify missing skills and improve your chances
+                of getting noticed by recruiters.
+            </p>
+
+            <a href="#analyser" class="hero-button">
+                Analyse My Resume
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Resume Analyser -->
+    <section class="analyser-section" id="analyser">
+
+        <div class="container">
+
+            <h2>AI Resume Analyser</h2>
+
+            <p class="section-description">
+                Upload your resume or paste your resume text below.
+            </p>
+
+
+            <!-- Upload Box -->
+            <div class="upload-box">
+
+                <h3>📄 Upload Resume</h3>
+
+                <p>
+                    Supported format: TXT
+                </p>
+
+                <input
+                    type="file"
+                    id="resumeFile"
+                    accept=".txt"
+                >
+
+            </div>
+
+
+            <!-- Resume Text -->
+            <div class="resume-input">
+
+                <h3>📝 Or Paste Resume Text</h3>
+
+                <textarea
+                    id="resumeText"
+                    placeholder="Paste your resume content here..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- Analyse Button -->
+            <button
+                class="analyse-button"
+                onclick="analyseResume()"
+            >
+                🔍 Analyse Resume
+            </button>
+
+
+            <!-- Result Dashboard -->
+            <div
+                class="results"
+                id="results"
+            >
+
+                <h2>📊 Resume Analysis Result</h2>
+
+
+                <!-- Score -->
+                <div class="score-container">
+
+                    <div class="score-circle">
+
+                        <span id="score">
+                            0
+                        </span>
+
+                        <small>/100</small>
+
+                    </div>
+
+                    <div>
+                        <h3>Resume Score</h3>
+
+                        <p id="scoreMessage">
+                            Analyse your resume to see your score.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Skills -->
+                <div class="result-card">
+
+                    <h3>💡 Skills Found</h3>
+
+                    <div
+                        id="skills"
+                        class="skills-list"
+                    >
+                        No skills detected yet.
+                    </div>
+
+                </div>
+
+
+                <!-- Strengths -->
+                <div class="result-card">
+
+                    <h3>✅ Strengths</h3>
+
+                    <ul id="strengths">
+
+                        <li>
+                            Analyse your resume to identify strengths.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Improvements -->
+                <div class="result-card">
+
+                    <h3>⚠️ Areas To Improve</h3>
+
+                    <ul id="weaknesses">
+
+                        <li>
+                            Analyse your resume to find areas for improvement.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <!-- Suggestions -->
+                <div class="result-card">
+
+                    <h3>🚀 Suggestions</h3>
+
+                    <ul id="suggestions">
+
+                        <li>
+                            Add your resume and analyse it to receive suggestions.
+                        </li>
+
+                    </ul>
+
+                </div>
+<button class="download-button" onclick="downloadReport()">
+    📥 Download Analysis Report
+</button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+
+        <div class="container">
+
+            <h2>About AI Resume Analyser</h2>
+
+            <p>
+                AI Resume Analyser is a simple web-based tool designed
+                to analyse resumes and provide useful feedback.
+                It identifies important skills and keywords,
+                calculates a resume score and provides suggestions
+                for improvement.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 AI Resume Analyser | Designed for Students
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
