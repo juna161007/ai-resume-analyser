@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,235 +12,886 @@
 
 <body>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar">
+<!-- =============================== -->
+<!-- NAVBAR -->
+<!-- =============================== -->
 
-        <div class="logo">
-            <img src="jk-logo.png" alt="JK Logo">
-            <span>AI Resume Analyser</span>
+<nav class="navbar">
+
+    <div class="logo">
+
+        <img src="jk-logo.png" alt="JK Logo">
+
+        <span>AI Resume Analyser</span>
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="#home">Home</a>
+
+        <a href="#analyser">Analyse</a>
+
+        <a href="#templates">Templates</a>
+
+        <a href="#builder">Builder</a>
+
+        <a href="#assistant">AI Assistant</a>
+
+        <a href="#translator">Translator</a>
+
+        <a href="#about">About</a>
+
+    </div>
+
+</nav>
+
+
+<!-- =============================== -->
+<!-- HOME -->
+<!-- =============================== -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <h1>
+            Better Resume.
+            <span>Brighter Future.</span>
+        </h1>
+
+        <p>
+            Analyse your resume, discover your strengths,
+            identify missing skills and improve your chances
+            of getting noticed by recruiters.
+        </p>
+
+        <a href="#analyser" class="hero-button">
+            Analyse My Resume
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =============================== -->
+<!-- RESUME ANALYSER -->
+<!-- =============================== -->
+
+<section class="analyser-section" id="analyser">
+
+    <div class="container">
+
+        <h2>📊 AI Resume Analyser</h2>
+
+        <p class="section-description">
+            Upload your resume or paste your resume text below.
+        </p>
+
+
+        <div class="upload-box">
+
+            <h3>📄 Upload Resume</h3>
+
+            <p>Supported format: TXT</p>
+
+            <input
+                type="file"
+                id="resumeFile"
+                accept=".txt"
+            >
+
         </div>
 
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#analyser">Analyse</a>
-            <a href="#about">About</a>
-        </div>
 
-    </nav>
+        <div class="resume-input">
 
+            <h3>📝 Or Paste Resume Text</h3>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-
-        <div class="hero-content">
-
-            <h1>
-                Better Resume.
-                <span>Brighter Future.</span>
-            </h1>
-
-            <p>
-                Analyse your resume, discover your strengths,
-                identify missing skills and improve your chances
-                of getting noticed by recruiters.
-            </p>
-
-            <a href="#analyser" class="hero-button">
-                Analyse My Resume
-            </a>
+            <textarea
+                id="resumeText"
+                placeholder="Paste your resume content here..."
+            ></textarea>
 
         </div>
 
-    </section>
+
+        <button
+            class="analyse-button"
+            onclick="analyseResume()"
+        >
+            🔍 Analyse Resume
+        </button>
 
 
-    <!-- Resume Analyser -->
-    <section class="analyser-section" id="analyser">
+        <!-- RESULTS -->
 
-        <div class="container">
+        <div class="results" id="results">
 
-            <h2>AI Resume Analyser</h2>
-
-            <p class="section-description">
-                Upload your resume or paste your resume text below.
-            </p>
+            <h2>📊 Resume Analysis Result</h2>
 
 
-            <!-- Upload Box -->
-            <div class="upload-box">
+            <div class="score-container">
 
-                <h3>📄 Upload Resume</h3>
+                <div class="score-circle">
 
-                <p>
-                    Supported format: TXT
-                </p>
+                    <span id="score">0</span>
 
-                <input
-                    type="file"
-                    id="resumeFile"
-                    accept=".txt"
-                >
+                    <small>/100</small>
+
+                </div>
+
+
+                <div>
+
+                    <h3>Resume Score</h3>
+
+                    <p id="scoreMessage">
+                        Analyse your resume to see your score.
+                    </p>
+
+                </div>
 
             </div>
 
 
-            <!-- Resume Text -->
-            <div class="resume-input">
+            <div class="result-card">
 
-                <h3>📝 Or Paste Resume Text</h3>
+                <h3>💡 Skills Found</h3>
+
+                <div
+                    id="skills"
+                    class="skills-list"
+                >
+                    No skills detected yet.
+                </div>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <h3>✅ Strengths</h3>
+
+                <ul id="strengths">
+
+                    <li>
+                        Analyse your resume to identify strengths.
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <h3>⚠️ Areas To Improve</h3>
+
+                <ul id="weaknesses">
+
+                    <li>
+                        Analyse your resume to find areas for improvement.
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <h3>🚀 Suggestions</h3>
+
+                <ul id="suggestions">
+
+                    <li>
+                        Add your resume and analyse it to receive suggestions.
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <button
+                class="download-button"
+                onclick="downloadReport()"
+            >
+                📥 Download Analysis Report
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================== -->
+<!-- RESUME TEMPLATES -->
+<!-- =============================== -->
+
+<section
+    class="templates-section"
+    id="templates"
+>
+
+    <div class="container">
+
+        <h2>📄 Resume Templates</h2>
+
+        <p class="section-description">
+            Choose a professional template for your resume.
+        </p>
+
+
+        <div class="templates-grid">
+
+
+            <!-- PROFESSIONAL -->
+
+            <div class="template-card">
+
+                <div class="template-preview professional-preview">
+
+                    <h3>YOUR NAME</h3>
+
+                    <p>Software Developer</p>
+
+                    <hr>
+
+                    <h4>Skills</h4>
+
+                    <p>
+                        Python • Java • JavaScript
+                    </p>
+
+                    <h4>Experience</h4>
+
+                    <p>
+                        Software Development Intern
+                    </p>
+
+                </div>
+
+
+                <h3>Professional</h3>
+
+                <p>
+                    Clean and professional design.
+                </p>
+
+                <button
+                    onclick="selectTemplate('Professional')"
+                >
+                    Use This Template
+                </button>
+
+            </div>
+
+
+            <!-- MODERN -->
+
+            <div class="template-card">
+
+                <div class="template-preview modern-preview">
+
+                    <h3>YOUR NAME</h3>
+
+                    <p>Full Stack Developer</p>
+
+                    <hr>
+
+                    <h4>About Me</h4>
+
+                    <p>
+                        Passionate developer with technical skills.
+                    </p>
+
+                    <h4>Projects</h4>
+
+                    <p>
+                        AI Resume Analyser
+                    </p>
+
+                </div>
+
+
+                <h3>Modern</h3>
+
+                <p>
+                    Modern layout for technology students.
+                </p>
+
+                <button
+                    onclick="selectTemplate('Modern')"
+                >
+                    Use This Template
+                </button>
+
+            </div>
+
+
+            <!-- MINIMAL -->
+
+            <div class="template-card">
+
+                <div class="template-preview minimal-preview">
+
+                    <h3>YOUR NAME</h3>
+
+                    <p>Computer Science Student</p>
+
+                    <hr>
+
+                    <h4>Education</h4>
+
+                    <p>
+                        B.Tech Computer Science
+                    </p>
+
+                    <h4>Skills</h4>
+
+                    <p>
+                        Python • SQL • HTML • CSS
+                    </p>
+
+                </div>
+
+
+                <h3>Minimal</h3>
+
+                <p>
+                    Simple and clean resume design.
+                </p>
+
+                <button
+                    onclick="selectTemplate('Minimal')"
+                >
+                    Use This Template
+                </button>
+
+            </div>
+
+
+            <!-- CREATIVE -->
+
+            <div class="template-card">
+
+                <div class="template-preview creative-preview">
+
+                    <h3>YOUR NAME</h3>
+
+                    <p>Creative Developer</p>
+
+                    <hr>
+
+                    <h4>Profile</h4>
+
+                    <p>
+                        Creative and technology-focused student.
+                    </p>
+
+                    <h4>Projects</h4>
+
+                    <p>
+                        Web & AI Projects
+                    </p>
+
+                </div>
+
+
+                <h3>Creative</h3>
+
+                <p>
+                    Attractive design for creative profiles.
+                </p>
+
+                <button
+                    onclick="selectTemplate('Creative')"
+                >
+                    Use This Template
+                </button>
+
+            </div>
+
+
+            <!-- FRESHER -->
+
+            <div class="template-card">
+
+                <div class="template-preview fresher-preview">
+
+                    <h3>YOUR NAME</h3>
+
+                    <p>Engineering Student</p>
+
+                    <hr>
+
+                    <h4>Education</h4>
+
+                    <p>
+                        B.Tech Engineering
+                    </p>
+
+                    <h4>Projects</h4>
+
+                    <p>
+                        Academic Projects
+                    </p>
+
+                    <h4>Skills</h4>
+
+                    <p>
+                        Programming • Web Development
+                    </p>
+
+                </div>
+
+
+                <h3>Fresher</h3>
+
+                <p>
+                    Designed especially for fresh graduates.
+                </p>
+
+                <button
+                    onclick="selectTemplate('Fresher')"
+                >
+                    Use This Template
+                </button>
+
+            </div>
+
+
+            <!-- DEVELOPER -->
+
+            <div class="template-card">
+
+                <div class="template-preview developer-preview">
+
+                    <h3>YOUR NAME</h3>
+
+                    <p>Software Developer</p>
+
+                    <hr>
+
+                    <h4>Technical Skills</h4>
+
+                    <p>
+                        Python • Java • React • Node.js
+                    </p>
+
+                    <h4>Projects</h4>
+
+                    <p>
+                        AI & Web Applications
+                    </p>
+
+                </div>
+
+
+                <h3>Developer</h3>
+
+                <p>
+                    Focused on programming and technical skills.
+                </p>
+
+                <button
+                    onclick="selectTemplate('Developer')"
+                >
+                    Use This Template
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================== -->
+<!-- RESUME BUILDER -->
+<!-- =============================== -->
+
+<section
+    class="builder-section"
+    id="builder"
+>
+
+    <div class="container">
+
+        <h2>📝 Resume Builder</h2>
+
+        <p class="section-description">
+            Enter your details to create your resume.
+        </p>
+
+
+        <div class="builder-form">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                id="builderName"
+                placeholder="Enter your full name"
+            >
+
+
+            <label>Job Title</label>
+
+            <input
+                type="text"
+                id="builderTitle"
+                placeholder="Example: Software Developer"
+            >
+
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="builderEmail"
+                placeholder="your@email.com"
+            >
+
+
+            <label>Phone</label>
+
+            <input
+                type="text"
+                id="builderPhone"
+                placeholder="+91 XXXXX XXXXX"
+            >
+
+
+            <label>Education</label>
+
+            <textarea
+                id="builderEducation"
+                placeholder="Enter your education"
+            ></textarea>
+
+
+            <label>Skills</label>
+
+            <textarea
+                id="builderSkills"
+                placeholder="Python, Java, HTML, CSS..."
+            ></textarea>
+
+
+            <label>Projects</label>
+
+            <textarea
+                id="builderProjects"
+                placeholder="Enter your projects"
+            ></textarea>
+
+
+            <label>Experience</label>
+
+            <textarea
+                id="builderExperience"
+                placeholder="Enter your experience or internship"
+            ></textarea>
+
+
+            <label>Certifications</label>
+
+            <textarea
+                id="builderCertifications"
+                placeholder="Enter your certifications"
+            ></textarea>
+
+
+            <label>LinkedIn</label>
+
+            <input
+                type="text"
+                id="builderLinkedIn"
+                placeholder="LinkedIn profile"
+            >
+
+
+            <label>GitHub</label>
+
+            <input
+                type="text"
+                id="builderGithub"
+                placeholder="GitHub profile"
+            >
+
+
+            <button
+                class="generate-resume-button"
+                onclick="generateResume()"
+            >
+                📄 Generate Resume
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================== -->
+<!-- AI ASSISTANT -->
+<!-- =============================== -->
+
+<section
+    class="ai-assistant-section"
+    id="assistant"
+>
+
+    <div class="container">
+
+        <h2>🤖 AI Career Assistant</h2>
+
+        <p class="section-description">
+            Ask questions about your resume, career, skills and interviews.
+        </p>
+
+
+        <div class="ai-chat-box">
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+            >
+
+                <div class="ai-message">
+
+                    👋 Hi! I'm your AI Career Assistant.
+                    Ask me anything about your resume or career.
+
+                </div>
+
+            </div>
+
+
+            <div class="chat-input-area">
+
+                <input
+                    type="text"
+                    id="aiQuestion"
+                    placeholder="Ask your career question..."
+                >
+
+
+                <button onclick="askAI()">
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =============================== -->
+<!-- TRANSLATOR -->
+<!-- =============================== -->
+
+<section
+    class="translator-section"
+    id="translator"
+>
+
+    <div class="container">
+
+        <h2>🌐 Resume Translator</h2>
+
+        <p class="section-description">
+            Translate your resume into different languages.
+        </p>
+
+
+        <div class="translator-box">
+
+
+            <div class="translator-controls">
+
+
+                <div>
+
+                    <label>From Language</label>
+
+                    <select id="sourceLanguage">
+
+                        <option value="English">
+                            English
+                        </option>
+
+                        <option value="Tamil">
+                            Tamil
+                        </option>
+
+                        <option value="Malayalam">
+                            Malayalam
+                        </option>
+
+                        <option value="Hindi">
+                            Hindi
+                        </option>
+
+                        <option value="Korean">
+                            Korean
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="arrow">
+                    ➜
+                </div>
+
+
+                <div>
+
+                    <label>To Language</label>
+
+                    <select id="targetLanguage">
+
+                        <option value="Tamil">
+                            Tamil
+                        </option>
+
+                        <option value="English">
+                            English
+                        </option>
+
+                        <option value="Hindi">
+                            Hindi
+                        </option>
+
+                        <option value="Malayalam">
+                            Malayalam
+                        </option>
+
+                        <option value="Korean">
+                            Korean
+                        </option>
+
+                        <option value="Japanese">
+                            Japanese
+                        </option>
+
+                        <option value="French">
+                            French
+                        </option>
+
+                        <option value="German">
+                            German
+                        </option>
+
+                        <option value="Spanish">
+                            Spanish
+                        </option>
+
+                        <option value="Arabic">
+                            Arabic
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <label>Resume Text</label>
+
+            <textarea
+                id="translatorText"
+                placeholder="Paste your resume text here..."
+            ></textarea>
+
+
+            <button
+                class="translate-button"
+                onclick="translateResume()"
+            >
+                🌐 Translate Resume
+            </button>
+
+
+            <div class="translation-result">
+
+                <h3>Translated Resume</h3>
 
                 <textarea
-                    id="resumeText"
-                    placeholder="Paste your resume content here..."
+                    id="translatedText"
+                    placeholder="Your translated resume will appear here..."
+                    readonly
                 ></textarea>
 
             </div>
 
-
-            <!-- Analyse Button -->
-            <button
-                class="analyse-button"
-                onclick="analyseResume()"
-            >
-                🔍 Analyse Resume
-            </button>
-
-
-            <!-- Result Dashboard -->
-            <div
-                class="results"
-                id="results"
-            >
-
-                <h2>📊 Resume Analysis Result</h2>
-
-
-                <!-- Score -->
-                <div class="score-container">
-
-                    <div class="score-circle">
-
-                        <span id="score">
-                            0
-                        </span>
-
-                        <small>/100</small>
-
-                    </div>
-
-                    <div>
-                        <h3>Resume Score</h3>
-
-                        <p id="scoreMessage">
-                            Analyse your resume to see your score.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <!-- Skills -->
-                <div class="result-card">
-
-                    <h3>💡 Skills Found</h3>
-
-                    <div
-                        id="skills"
-                        class="skills-list"
-                    >
-                        No skills detected yet.
-                    </div>
-
-                </div>
-
-
-                <!-- Strengths -->
-                <div class="result-card">
-
-                    <h3>✅ Strengths</h3>
-
-                    <ul id="strengths">
-
-                        <li>
-                            Analyse your resume to identify strengths.
-                        </li>
-
-                    </ul>
-
-                </div>
-
-
-                <!-- Improvements -->
-                <div class="result-card">
-
-                    <h3>⚠️ Areas To Improve</h3>
-
-                    <ul id="weaknesses">
-
-                        <li>
-                            Analyse your resume to find areas for improvement.
-                        </li>
-
-                    </ul>
-
-                </div>
-
-
-                <!-- Suggestions -->
-                <div class="result-card">
-
-                    <h3>🚀 Suggestions</h3>
-
-                    <ul id="suggestions">
-
-                        <li>
-                            Add your resume and analyse it to receive suggestions.
-                        </li>
-
-                    </ul>
-
-                </div>
-<button class="download-button" onclick="downloadReport()">
-    📥 Download Analysis Report
-</button>
-            </div>
-
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <!-- About Section -->
-    <section class="about-section" id="about">
+<!-- =============================== -->
+<!-- ABOUT -->
+<!-- =============================== -->
 
-        <div class="container">
+<section
+    class="about-section"
+    id="about"
+>
 
-            <h2>About AI Resume Analyser</h2>
+    <div class="container">
 
-            <p>
-                AI Resume Analyser is a simple web-based tool designed
-                to analyse resumes and provide useful feedback.
-                It identifies important skills and keywords,
-                calculates a resume score and provides suggestions
-                for improvement.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- Footer -->
-    <footer>
+        <h2>About AI Resume Analyser</h2>
 
         <p>
-            © 2026 AI Resume Analyser | Designed for Students
+
+            AI Resume Analyser is a web-based tool designed
+            to analyse resumes and provide useful feedback.
+
+            It identifies important skills and keywords,
+            calculates a resume score and provides suggestions
+            for improvement.
+
         </p>
 
-    </footer>
+    </div>
+
+</section>
 
 
-    <script src="script.js"></script>
+<!-- =============================== -->
+<!-- FOOTER -->
+<!-- =============================== -->
+
+<footer>
+
+    <p>
+        © 2026 AI Resume Analyser | Designed for Students
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
 
 </body>
+
 </html>

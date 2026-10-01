@@ -576,3 +576,447 @@ AI Resume Analyser
     link.click();
 
 }
+// ===============================
+// RESUME TEMPLATE SELECTION
+// ===============================
+
+// ===============================
+// RESUME TEMPLATE SELECTION
+// ===============================
+
+let selectedTemplate = "Professional";
+
+function selectTemplate(templateName) {
+
+    selectedTemplate = templateName;
+
+    // Scroll to Resume Builder
+    document.getElementById("builder").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+// ===============================
+// GENERATE RESUME
+// ===============================
+
+function generateResume() {
+
+    const name = document.getElementById("builderName").value;
+    const title = document.getElementById("builderTitle").value;
+    const email = document.getElementById("builderEmail").value;
+    const phone = document.getElementById("builderPhone").value;
+    const education = document.getElementById("builderEducation").value;
+    const skills = document.getElementById("builderSkills").value;
+    const projects = document.getElementById("builderProjects").value;
+    const experience = document.getElementById("builderExperience").value;
+    const certifications = document.getElementById("builderCertifications").value;
+    const linkedin = document.getElementById("builderLinkedIn").value;
+    const github = document.getElementById("builderGithub").value;
+
+
+    if (!name || !title || !email) {
+
+        alert("Please enter your Name, Job Title and Email.");
+
+        return;
+    }
+
+
+    const resumeWindow = window.open("", "_blank");
+
+
+    resumeWindow.document.write(`
+
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>${name} - Resume</title>
+
+            <style>
+
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 40px;
+                    background: white;
+                    color: #222;
+                }
+
+                .resume {
+                    max-width: 850px;
+                    margin: auto;
+                }
+
+                .header {
+                    text-align: center;
+                    border-bottom: 3px solid #00a8cc;
+                    padding-bottom: 20px;
+                }
+
+                .header h1 {
+                    margin: 0;
+                    font-size: 34px;
+                }
+
+                .header h2 {
+                    margin: 8px 0;
+                    color: #00a8cc;
+                }
+
+                .contact {
+                    font-size: 14px;
+                    color: #555;
+                }
+
+                .section {
+                    margin-top: 25px;
+                }
+
+                .section h3 {
+                    color: #00a8cc;
+                    border-bottom: 1px solid #ddd;
+                    padding-bottom: 5px;
+                }
+
+                .section p {
+                    white-space: pre-line;
+                    line-height: 1.6;
+                }
+
+                .template-name {
+                    text-align: right;
+                    font-size: 11px;
+                    color: #999;
+                    margin-bottom: 10px;
+                }
+
+                .download {
+                    text-align: center;
+                    margin-top: 35px;
+                }
+
+                .download button {
+                    padding: 12px 25px;
+                    background: #00a8cc;
+                    color: white;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: bold;
+                }
+
+                @media print {
+
+                    .download {
+                        display: none;
+                    }
+
+                }
+
+            </style>
+
+        </head>
+
+
+        <body>
+
+            <div class="resume">
+
+                <div class="template-name">
+                    Template: ${selectedTemplate}
+                </div>
+
+
+                <div class="header">
+
+                    <h1>${name}</h1>
+
+                    <h2>${title}</h2>
+
+                    <div class="contact">
+
+                        ${email}
+                        ${phone ? " | " + phone : ""}
+
+                    </div>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h3>EDUCATION</h3>
+
+                    <p>${education || "Not provided"}</p>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h3>SKILLS</h3>
+
+                    <p>${skills || "Not provided"}</p>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h3>PROJECTS</h3>
+
+                    <p>${projects || "Not provided"}</p>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h3>EXPERIENCE</h3>
+
+                    <p>${experience || "Not provided"}</p>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h3>CERTIFICATIONS</h3>
+
+                    <p>${certifications || "Not provided"}</p>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h3>LINKEDIN</h3>
+
+                    <p>${linkedin || "Not provided"}</p>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h3>GITHUB</h3>
+
+                    <p>${github || "Not provided"}</p>
+
+                </div>
+
+
+                <div class="download">
+
+                    <button onclick="window.print()">
+                        📥 Print / Save as PDF
+                    </button>
+
+                </div>
+
+            </div>
+
+        </body>
+
+        </html>
+
+    `);
+
+
+    resumeWindow.document.close();
+
+}
+// ===============================
+// AI ASSISTANT
+// ===============================
+
+async function askAI() {
+
+    const questionInput = document.getElementById("aiQuestion");
+    const chatMessages = document.getElementById("chatMessages");
+
+    const question = questionInput.value.trim();
+
+    if (!question) {
+        alert("Please enter a question.");
+        return;
+    }
+
+
+    // Show user's question
+    const userMessage = document.createElement("div");
+
+    userMessage.className = "user-message";
+
+    userMessage.textContent = question;
+
+    chatMessages.appendChild(userMessage);
+
+
+    // Clear input
+    questionInput.value = "";
+
+
+    // Show temporary message
+    const aiMessage = document.createElement("div");
+
+    aiMessage.className = "ai-message";
+
+    aiMessage.textContent = "Thinking...";
+
+    chatMessages.appendChild(aiMessage);
+
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/ai-assistant",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    question: question
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (response.ok) {
+
+            aiMessage.textContent = data.answer;
+
+        } else {
+
+            aiMessage.textContent =
+                data.message || "Something went wrong.";
+
+        }
+
+
+    } catch (error) {
+
+        console.error("AI Assistant Error:", error);
+
+        aiMessage.textContent =
+            "Unable to connect to the AI Assistant.";
+
+    }
+
+
+    // Scroll to latest message
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+}
+// =====================================
+// RESUME TRANSLATOR
+// =====================================
+
+async function translateResume() {
+
+    const text =
+        document.getElementById("translatorText").value.trim();
+
+    const sourceLanguage =
+        document.getElementById("sourceLanguage").value;
+
+    const targetLanguage =
+        document.getElementById("targetLanguage").value;
+
+    const translatedText =
+        document.getElementById("translatedText");
+
+
+    // Check empty text
+    if (!text) {
+
+        alert("Please enter your resume text.");
+
+        return;
+    }
+
+
+    // Same language
+    if (sourceLanguage === targetLanguage) {
+
+        translatedText.value = text;
+
+        return;
+    }
+
+
+    // Show loading
+    translatedText.value = "Translating...";
+
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/translate",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    text: text,
+
+                    sourceLanguage: sourceLanguage,
+
+                    targetLanguage: targetLanguage
+
+                })
+
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (response.ok) {
+
+            translatedText.value =
+                data.translation;
+
+        }
+
+        else {
+
+            translatedText.value =
+                data.message ||
+                "Translation failed.";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Translation Error:",
+            error
+        );
+
+        translatedText.value =
+            "Unable to connect to the translation service.";
+
+    }
+
+}
