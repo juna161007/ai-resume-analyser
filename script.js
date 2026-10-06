@@ -3,7 +3,9 @@
 ===================================== */
 
 
-/* List of skills to search */
+/* =====================================
+   SKILLS LIST
+===================================== */
 
 const skillsList = [
     "python",
@@ -35,6 +37,14 @@ const skillsList = [
 
 
 /* =====================================
+   BACKEND URL
+===================================== */
+
+const BACKEND_URL =
+    "https://ai-resume-analyser-1cpz.onrender.com";
+
+
+/* =====================================
    FILE UPLOAD
 ===================================== */
 
@@ -47,6 +57,7 @@ document
         if (!file) {
             return;
         }
+
 
         /* Check file type */
 
@@ -100,23 +111,44 @@ async function analyseResume() {
 
         return;
     }
-// Send resume to backend
-fetch("https://ai-resume-analyser-1cpz.onrender.com/analyse", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        resumeText: resumeText
-    })
-})
-.then(response => response.json())
-.then(data => {
-    console.log("Backend response:", data);
-})
-.catch(error => {
-    console.log("Backend connection error:", error);
-});
+
+
+    /* =====================================
+       SEND RESUME TO BACKEND
+    ===================================== */
+
+    try {
+
+        const response = await fetch(
+            BACKEND_URL + "/analyse",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    resumeText: resumeText
+                })
+            }
+        );
+
+
+        const data = await response.json();
+
+        console.log("Backend response:", data);
+
+
+    } catch (error) {
+
+        console.error(
+            "Backend connection error:",
+            error
+        );
+
+    }
+
 
     /* =====================================
        FIND SKILLS
@@ -164,6 +196,7 @@ fetch("https://ai-resume-analyser-1cpz.onrender.com/analyse", {
         score += 20;
 
     }
+
     else if (wordCount >= 50) {
 
         score += 10;
@@ -227,18 +260,21 @@ fetch("https://ai-resume-analyser-1cpz.onrender.com/analyse", {
             "Excellent! Your resume contains strong information.";
 
     }
+
     else if (score >= 60) {
 
         scoreMessage =
             "Good resume. A few improvements can make it stronger.";
 
     }
+
     else if (score >= 40) {
 
         scoreMessage =
             "Your resume has potential. Consider adding more details.";
 
     }
+
     else {
 
         scoreMessage =
@@ -268,6 +304,7 @@ fetch("https://ai-resume-analyser-1cpz.onrender.com/analyse", {
             "<p>No predefined skills detected.</p>";
 
     }
+
     else {
 
         foundSkills.forEach(function (skill) {
@@ -308,6 +345,7 @@ fetch("https://ai-resume-analyser-1cpz.onrender.com/analyse", {
         );
 
     }
+
     else if (foundSkills.length > 0) {
 
         addListItem(
@@ -316,6 +354,7 @@ fetch("https://ai-resume-analyser-1cpz.onrender.com/analyse", {
         );
 
     }
+
     else {
 
         addListItem(
@@ -576,21 +615,22 @@ AI Resume Analyser
     link.click();
 
 }
-// ===============================
-// RESUME TEMPLATE SELECTION
-// ===============================
 
-// ===============================
-// RESUME TEMPLATE SELECTION
-// ===============================
+
+/* =====================================
+   RESUME TEMPLATE SELECTION
+===================================== */
 
 let selectedTemplate = "Professional";
+
 
 function selectTemplate(templateName) {
 
     selectedTemplate = templateName;
 
-    // Scroll to Resume Builder
+
+    /* Scroll to Resume Builder */
+
     document.getElementById("builder").scrollIntoView({
         behavior: "smooth"
     });
@@ -598,34 +638,58 @@ function selectTemplate(templateName) {
 }
 
 
-// ===============================
-// GENERATE RESUME
-// ===============================
+/* =====================================
+   GENERATE RESUME
+===================================== */
 
 function generateResume() {
 
-    const name = document.getElementById("builderName").value;
-    const title = document.getElementById("builderTitle").value;
-    const email = document.getElementById("builderEmail").value;
-    const phone = document.getElementById("builderPhone").value;
-    const education = document.getElementById("builderEducation").value;
-    const skills = document.getElementById("builderSkills").value;
-    const projects = document.getElementById("builderProjects").value;
-    const experience = document.getElementById("builderExperience").value;
-    const certifications = document.getElementById("builderCertifications").value;
-    const linkedin = document.getElementById("builderLinkedIn").value;
-    const github = document.getElementById("builderGithub").value;
+    const name =
+        document.getElementById("builderName").value;
+
+    const title =
+        document.getElementById("builderTitle").value;
+
+    const email =
+        document.getElementById("builderEmail").value;
+
+    const phone =
+        document.getElementById("builderPhone").value;
+
+    const education =
+        document.getElementById("builderEducation").value;
+
+    const skills =
+        document.getElementById("builderSkills").value;
+
+    const projects =
+        document.getElementById("builderProjects").value;
+
+    const experience =
+        document.getElementById("builderExperience").value;
+
+    const certifications =
+        document.getElementById("builderCertifications").value;
+
+    const linkedin =
+        document.getElementById("builderLinkedIn").value;
+
+    const github =
+        document.getElementById("builderGithub").value;
 
 
     if (!name || !title || !email) {
 
-        alert("Please enter your Name, Job Title and Email.");
+        alert(
+            "Please enter your Name, Job Title and Email."
+        );
 
         return;
     }
 
 
-    const resumeWindow = window.open("", "_blank");
+    const resumeWindow =
+        window.open("", "_blank");
 
 
     resumeWindow.document.write(`
@@ -641,80 +705,141 @@ function generateResume() {
             <style>
 
                 body {
+
                     font-family: Arial, sans-serif;
+
                     margin: 0;
+
                     padding: 40px;
+
                     background: white;
+
                     color: #222;
+
                 }
+
 
                 .resume {
+
                     max-width: 850px;
+
                     margin: auto;
+
                 }
+
 
                 .header {
+
                     text-align: center;
+
                     border-bottom: 3px solid #00a8cc;
+
                     padding-bottom: 20px;
+
                 }
+
 
                 .header h1 {
+
                     margin: 0;
+
                     font-size: 34px;
+
                 }
+
 
                 .header h2 {
+
                     margin: 8px 0;
+
                     color: #00a8cc;
+
                 }
+
 
                 .contact {
+
                     font-size: 14px;
+
                     color: #555;
+
                 }
+
 
                 .section {
+
                     margin-top: 25px;
+
                 }
+
 
                 .section h3 {
+
                     color: #00a8cc;
+
                     border-bottom: 1px solid #ddd;
+
                     padding-bottom: 5px;
+
                 }
+
 
                 .section p {
+
                     white-space: pre-line;
+
                     line-height: 1.6;
+
                 }
+
 
                 .template-name {
+
                     text-align: right;
+
                     font-size: 11px;
+
                     color: #999;
+
                     margin-bottom: 10px;
+
                 }
+
 
                 .download {
+
                     text-align: center;
+
                     margin-top: 35px;
+
                 }
 
+
                 .download button {
+
                     padding: 12px 25px;
+
                     background: #00a8cc;
+
                     color: white;
+
                     border: none;
+
                     border-radius: 6px;
+
                     cursor: pointer;
+
                     font-weight: bold;
+
                 }
+
 
                 @media print {
 
                     .download {
+
                         display: none;
+
                     }
 
                 }
@@ -729,7 +854,9 @@ function generateResume() {
             <div class="resume">
 
                 <div class="template-name">
+
                     Template: ${selectedTemplate}
+
                 </div>
 
 
@@ -742,6 +869,7 @@ function generateResume() {
                     <div class="contact">
 
                         ${email}
+
                         ${phone ? " | " + phone : ""}
 
                     </div>
@@ -815,7 +943,9 @@ function generateResume() {
                 <div class="download">
 
                     <button onclick="window.print()">
+
                         📥 Print / Save as PDF
+
                     </button>
 
                 </div>
@@ -832,83 +962,126 @@ function generateResume() {
     resumeWindow.document.close();
 
 }
-// ===============================
-// AI ASSISTANT
-// ===============================
+
+
+/* =====================================
+   AI ASSISTANT
+===================================== */
 
 async function askAI() {
 
-    const questionInput = document.getElementById("aiQuestion");
-    const chatMessages = document.getElementById("chatMessages");
+    const questionInput =
+        document.getElementById("aiQuestion");
 
-    const question = questionInput.value.trim();
+    const chatMessages =
+        document.getElementById("chatMessages");
+
+
+    const question =
+        questionInput.value.trim();
+
 
     if (!question) {
+
         alert("Please enter a question.");
+
         return;
     }
 
 
-    // Show user's question
-    const userMessage = document.createElement("div");
+    /* Show user's question */
 
-    userMessage.className = "user-message";
-
-    userMessage.textContent = question;
-
-    chatMessages.appendChild(userMessage);
+    const userMessage =
+        document.createElement("div");
 
 
-    // Clear input
+    userMessage.className =
+        "user-message";
+
+
+    userMessage.textContent =
+        question;
+
+
+    chatMessages.appendChild(
+        userMessage
+    );
+
+
+    /* Clear input */
+
     questionInput.value = "";
 
 
-    // Show temporary message
-    const aiMessage = document.createElement("div");
+    /* Show temporary message */
 
-    aiMessage.className = "ai-message";
+    const aiMessage =
+        document.createElement("div");
 
-    aiMessage.textContent = "Thinking...";
 
-    chatMessages.appendChild(aiMessage);
+    aiMessage.className =
+        "ai-message";
+
+
+    aiMessage.textContent =
+        "Thinking...";
+
+
+    chatMessages.appendChild(
+        aiMessage
+    );
 
 
     try {
 
-        const response = await fetch(
-       "https://ai-resume-analyser-1cpz.onrender.com/translate",
-            {
-                method: "POST",
+        const response =
+            await fetch(
+                BACKEND_URL + "/ai-assistant",
+                {
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    method: "POST",
 
-                body: JSON.stringify({
-                    question: question
-                })
-            }
-        );
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        question: question
+                    })
+
+                }
+            );
 
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
 
         if (response.ok) {
 
-            aiMessage.textContent = data.answer;
+            aiMessage.textContent =
+                data.answer;
 
-        } else {
+        }
+
+        else {
 
             aiMessage.textContent =
-                data.message || "Something went wrong.";
+                data.message ||
+                "Something went wrong.";
 
         }
 
 
-    } catch (error) {
+    }
 
-        console.error("AI Assistant Error:", error);
+    catch (error) {
+
+        console.error(
+            "AI Assistant Error:",
+            error
+        );
+
 
         aiMessage.textContent =
             "Unable to connect to the AI Assistant.";
@@ -916,78 +1089,110 @@ async function askAI() {
     }
 
 
-    // Scroll to latest message
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    /* Scroll to latest message */
+
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
 
 }
-// =====================================
-// RESUME TRANSLATOR
-// =====================================
+
+
+/* =====================================
+   RESUME TRANSLATOR
+===================================== */
 
 async function translateResume() {
 
     const text =
-        document.getElementById("translatorText").value.trim();
+        document
+            .getElementById("translatorText")
+            .value
+            .trim();
+
 
     const sourceLanguage =
-        document.getElementById("sourceLanguage").value;
+        document
+            .getElementById("sourceLanguage")
+            .value;
+
 
     const targetLanguage =
-        document.getElementById("targetLanguage").value;
+        document
+            .getElementById("targetLanguage")
+            .value;
+
 
     const translatedText =
-        document.getElementById("translatedText");
+        document
+            .getElementById("translatedText");
 
 
-    // Check empty text
+    /* Check resume text */
+
     if (!text) {
 
-        alert("Please enter your resume text.");
+        alert(
+            "Please enter your resume text."
+        );
 
         return;
     }
 
 
-    // Same language
-    if (sourceLanguage === targetLanguage) {
+    /* Same language */
 
-        translatedText.value = text;
+    if (
+        sourceLanguage ===
+        targetLanguage
+    ) {
+
+        translatedText.value =
+            text;
 
         return;
     }
 
 
-    // Show loading
-    translatedText.value = "Translating...";
+    /* Show loading */
+
+    translatedText.value =
+        "Translating...";
 
 
     try {
 
-        const response = await fetch(
-       "https://ai-resume-analyser-1cpz.onrender.com/translate",
-            {
+        const response =
+            await fetch(
+                BACKEND_URL + "/translate",
+                {
 
-                method: "POST",
+                    method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    headers: {
 
-                body: JSON.stringify({
+                        "Content-Type":
+                            "application/json"
 
-                    text: text,
+                    },
 
-                    sourceLanguage: sourceLanguage,
+                    body: JSON.stringify({
 
-                    targetLanguage: targetLanguage
+                        text: text,
 
-                })
+                        sourceLanguage:
+                            sourceLanguage,
 
-            }
-        );
+                        targetLanguage:
+                            targetLanguage
+
+                    })
+
+                }
+            );
 
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
 
         if (response.ok) {
@@ -1013,6 +1218,7 @@ async function translateResume() {
             "Translation Error:",
             error
         );
+
 
         translatedText.value =
             "Unable to connect to the translation service.";
