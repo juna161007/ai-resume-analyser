@@ -964,7 +964,7 @@ async function translateResume() {
     try {
 
         const response = await fetch(
-         "https://ai-resume-analyser-1cpz.onrender.com/ai-assistant",
+       "https://ai-resume-analyser-1cpz.onrender.com/translate",
             {
 
                 method: "POST",
