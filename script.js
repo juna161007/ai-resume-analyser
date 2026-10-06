@@ -101,7 +101,7 @@ async function analyseResume() {
         return;
     }
 // Send resume to backend
-fetch("http://localhost:5000/analyse", {
+fetch("https://ai-resume-analyser-1cpz.onrender.com/analyse", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -876,7 +876,7 @@ async function askAI() {
     try {
 
         const response = await fetch(
-            "http://localhost:5000/ai-assistant",
+        "https://ai-resume-analyser-1cpz.onrender.com/ai-assistant",
             {
                 method: "POST",
 
@@ -964,7 +964,7 @@ async function translateResume() {
     try {
 
         const response = await fetch(
-            "http://localhost:5000/translate",
+         "https://ai-resume-analyser-1cpz.onrender.com/ai-assistant",
             {
 
                 method: "POST",
