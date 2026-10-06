@@ -180,12 +180,8 @@ app.post("/ai-assistant", (req, res) => {
 app.post("/translate", async (req, res) => {
 
     const text = req.body.text;
-
-    const sourceLanguage =
-        req.body.sourceLanguage;
-
-    const targetLanguage =
-        req.body.targetLanguage;
+    const sourceLanguage = req.body.sourceLanguage;
+    const targetLanguage = req.body.targetLanguage;
 
 
     // Check resume text
@@ -225,23 +221,14 @@ app.post("/translate", async (req, res) => {
     const languageCodes = {
 
         English: "en",
-
         Tamil: "ta",
-
         Malayalam: "ml",
-
         Hindi: "hi",
-
         Korean: "ko",
-
         Japanese: "ja",
-
         French: "fr",
-
         German: "de",
-
         Spanish: "es",
-
         Arabic: "ar"
 
     };
@@ -254,65 +241,63 @@ app.post("/translate", async (req, res) => {
         languageCodes[targetLanguage];
 
 
-    // Check supported language
+    // Check supported languages
     if (!sourceCode || !targetCode) {
 
         return res.status(400).json({
-            message: "Unsupported language."
+            message: "Unsupported language"
         });
 
     }
 
 
-    // =====================================
-    // SPLIT RESUME INTO SMALL CHUNKS
-    // =====================================
+    try {
 
-    const chunks = [];
+        // =====================================
+        // SPLIT LONG RESUME
+        // =====================================
 
-    let remainingText = text;
+        const chunks = [];
 
-
-    while (remainingText.length > 0) {
-
-        let chunk =
-            remainingText.slice(0, 450);
+        let remaining = text;
 
 
-        // Try to stop at a space
-        // instead of cutting a word
-        if (remainingText.length > 450) {
+        while (remaining.length > 0) {
 
-            const lastSpace =
-                chunk.lastIndexOf(" ");
+            let chunk =
+                remaining.substring(0, 400);
 
 
-            if (lastSpace > 0) {
+            if (remaining.length > 400) {
 
-                chunk =
-                    chunk.slice(0, lastSpace);
+                const lastSpace =
+                    chunk.lastIndexOf(" ");
+
+
+                if (lastSpace > 0) {
+
+                    chunk =
+                        chunk.substring(0, lastSpace);
+
+                }
 
             }
+
+
+            chunks.push(chunk);
+
+
+            remaining =
+                remaining
+                    .substring(chunk.length)
+                    .trim();
 
         }
 
 
-        chunks.push(chunk.trim());
-
-
-        remainingText =
-            remainingText
-                .slice(chunk.length)
-                .trim();
-
-    }
-
-
-    // =====================================
-    // TRANSLATE EACH CHUNK
-    // =====================================
-
-    try {
+        // =====================================
+        // TRANSLATE EACH CHUNK
+        // =====================================
 
         const translatedChunks = [];
 
@@ -320,13 +305,12 @@ app.post("/translate", async (req, res) => {
         for (const chunk of chunks) {
 
             const url =
-                "https://api.mymemory.translated.net/get" +
-                "?q=" +
-                encodeURIComponent(chunk) +
-                "&langpair=" +
-                sourceCode +
-                "|" +
-                targetCode;
+                "https://translate.googleapis.com/translate_a/single" +
+                "?client=gtx" +
+                "&sl=" + sourceCode +
+                "&tl=" + targetCode +
+                "&dt=t" +
+                "&q=" + encodeURIComponent(chunk);
 
 
             const response =
@@ -336,7 +320,7 @@ app.post("/translate", async (req, res) => {
             if (!response.ok) {
 
                 throw new Error(
-                    "Translation service error"
+                    "Translation API failed"
                 );
 
             }
@@ -346,34 +330,48 @@ app.post("/translate", async (req, res) => {
                 await response.json();
 
 
-            if (
-                !data.responseData ||
-                !data.responseData.translatedText
-            ) {
+            let translated = "";
+
+
+            if (data && data[0]) {
+
+                for (const part of data[0]) {
+
+                    if (part[0]) {
+
+                        translated += part[0];
+
+                    }
+
+                }
+
+            }
+
+
+            if (!translated) {
 
                 throw new Error(
-                    "Translation was not returned"
+                    "No translation received"
                 );
 
             }
 
 
             translatedChunks.push(
-                data.responseData.translatedText
+                translated
             );
 
         }
 
 
-        // Combine all translated chunks
-        const finalTranslation =
-            translatedChunks.join("\n\n");
-
+        // =====================================
+        // SEND RESULT
+        // =====================================
 
         res.json({
 
             translation:
-                finalTranslation
+                translatedChunks.join("\n\n")
 
         });
 
@@ -404,7 +402,8 @@ app.post("/translate", async (req, res) => {
 // START SERVER
 // =====================================
 
-const PORT = process.env.PORT || 5000;
+const PORT =
+    process.env.PORT || 5000;
 
 
 app.listen(PORT, "0.0.0.0", () => {
