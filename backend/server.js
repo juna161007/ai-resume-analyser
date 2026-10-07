@@ -1,10 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+const OpenAI = require("openai");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+
+// =====================================
+// OPENAI CLIENT
+// =====================================
+
+const client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
 
 
 // =====================================
@@ -48,10 +58,10 @@ app.post("/analyse", (req, res) => {
 
 
 // =====================================
-// AI ASSISTANT
+// AI ASSISTANT - REAL AI
 // =====================================
 
-app.post("/ai-assistant", (req, res) => {
+app.post("/ai-assistant", async (req, res) => {
 
     const question = req.body.question;
 
@@ -63,112 +73,52 @@ app.post("/ai-assistant", (req, res) => {
 
     }
 
-    const lowerQuestion = question.toLowerCase();
+    try {
 
-    let answer;
+        const response = await client.responses.create({
 
+            model: "gpt-6-luna",
 
-    // Resume improvement
-    if (
-        lowerQuestion.includes("resume") ||
-        lowerQuestion.includes("improve")
-    ) {
+            instructions:
+                "You are a helpful, intelligent and friendly AI assistant. " +
+                "You can answer general questions as well as questions about " +
+                "resumes, careers, interviews, programming, education, " +
+                "technology, projects and professional development. " +
+                "Give clear, accurate and useful answers. " +
+                "If the user asks a technical question, explain it simply " +
+                "when appropriate. " +
+                "If the user asks about improving a resume, give practical " +
+                "professional suggestions. " +
+                "Do not say that you can only answer resume questions.",
 
-        answer =
-            "To improve your resume, use a clear professional summary, " +
-            "highlight relevant technical skills, add measurable project " +
-            "achievements, and keep the formatting simple and readable.";
+            input: question
 
-    }
-
-
-    // Skills
-    else if (
-        lowerQuestion.includes("skill") ||
-        lowerQuestion.includes("learn")
-    ) {
-
-        answer =
-            "Useful career skills include programming, data structures, " +
-            "databases, Git, web development and problem-solving.";
-
-    }
+        });
 
 
-    // Interview
-    else if (
-        lowerQuestion.includes("interview")
-    ) {
+        res.json({
 
-        answer =
-            "For interviews, prepare your self-introduction, resume projects, " +
-            "technical fundamentals, programming questions and common HR questions.";
+            answer: response.output_text
+
+        });
 
     }
 
+    catch (error) {
 
-    // Python
-    else if (
-        lowerQuestion.includes("python")
-    ) {
+        console.error(
+            "AI Assistant Error:",
+            error
+        );
 
-        answer =
-            "For Python interviews, prepare variables, data types, loops, " +
-            "functions, lists, dictionaries, OOP, exception handling and modules.";
+        res.status(500).json({
 
-    }
+            message:
+                "Unable to get an AI response right now."
 
-
-    // Java
-    else if (
-        lowerQuestion.includes("java")
-    ) {
-
-        answer =
-            "For Java interviews, prepare OOP, classes, objects, inheritance, " +
-            "polymorphism, abstraction, interfaces, collections and exception handling.";
+        });
 
     }
-
-
-    // Projects
-    else if (
-        lowerQuestion.includes("project")
-    ) {
-
-        answer =
-            "Projects make your resume stronger. Explain the problem, technology " +
-            "used, your contribution and the result of each project.";
-
-    }
-
-
-    // Career / Job
-    else if (
-        lowerQuestion.includes("career") ||
-        lowerQuestion.includes("job")
-    ) {
-
-        answer =
-            "Build strong technical skills, create practical projects, maintain " +
-            "a good resume, improve communication skills and practice interviews.";
-
-    }
-
-
-    // Default
-    else {
-
-        answer =
-            "I can help you with resume improvement, career skills, " +
-            "interview preparation, programming, projects and professional development.";
-
-    }
-
-
-    res.json({
-        answer: answer
-    });
 
 });
 
@@ -180,35 +130,50 @@ app.post("/ai-assistant", (req, res) => {
 app.post("/translate", async (req, res) => {
 
     const text = req.body.text;
-    const sourceLanguage = req.body.sourceLanguage;
-    const targetLanguage = req.body.targetLanguage;
+
+    const sourceLanguage =
+        req.body.sourceLanguage;
+
+    const targetLanguage =
+        req.body.targetLanguage;
 
 
     // Check resume text
+
     if (!text) {
 
         return res.status(400).json({
-            message: "Resume text is required"
+
+            message:
+                "Resume text is required"
+
         });
 
     }
 
 
     // Check languages
+
     if (!sourceLanguage || !targetLanguage) {
 
         return res.status(400).json({
-            message: "Source and target languages are required"
+
+            message:
+                "Source and target languages are required"
+
         });
 
     }
 
 
     // Same language
+
     if (sourceLanguage === targetLanguage) {
 
         return res.json({
+
             translation: text
+
         });
 
     }
@@ -242,10 +207,14 @@ app.post("/translate", async (req, res) => {
 
 
     // Check supported languages
+
     if (!sourceCode || !targetCode) {
 
         return res.status(400).json({
-            message: "Unsupported language"
+
+            message:
+                "Unsupported language"
+
         });
 
     }
@@ -277,7 +246,10 @@ app.post("/translate", async (req, res) => {
                 if (lastSpace > 0) {
 
                     chunk =
-                        chunk.substring(0, lastSpace);
+                        chunk.substring(
+                            0,
+                            lastSpace
+                        );
 
                 }
 
@@ -310,7 +282,8 @@ app.post("/translate", async (req, res) => {
                 "&sl=" + sourceCode +
                 "&tl=" + targetCode +
                 "&dt=t" +
-                "&q=" + encodeURIComponent(chunk);
+                "&q=" +
+                encodeURIComponent(chunk);
 
 
             const response =
@@ -406,10 +379,14 @@ const PORT =
     process.env.PORT || 5000;
 
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(
+    PORT,
+    "0.0.0.0",
+    () => {
 
-    console.log(
-        `Server running at http://localhost:${PORT}`
-    );
+        console.log(
+            `Server running at http://localhost:${PORT}`
+        );
 
-});
+    }
+);
