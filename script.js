@@ -976,61 +976,52 @@ async function askAI() {
     const chatMessages =
         document.getElementById("chatMessages");
 
-
     const question =
         questionInput.value.trim();
 
-
     if (!question) {
-
         alert("Please enter a question.");
-
         return;
     }
 
-
-    /* Show user's question */
+    /* Show user message */
 
     const userMessage =
         document.createElement("div");
 
-
     userMessage.className =
         "user-message";
 
-
     userMessage.textContent =
         question;
-
 
     chatMessages.appendChild(
         userMessage
     );
 
-
     /* Clear input */
 
     questionInput.value = "";
 
-
-    /* Show temporary message */
+    /* Show thinking message */
 
     const aiMessage =
         document.createElement("div");
 
-
     aiMessage.className =
         "ai-message";
 
-
     aiMessage.textContent =
         "Thinking...";
-
 
     chatMessages.appendChild(
         aiMessage
     );
 
+    /* Scroll to latest message */
+
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
 
     try {
 
@@ -1038,26 +1029,23 @@ async function askAI() {
             await fetch(
                 BACKEND_URL + "/ai-assistant",
                 {
-
                     method: "POST",
 
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type":
+                            "application/json"
                     },
 
                     body: JSON.stringify({
                         question: question
                     })
-
                 }
             );
-
 
         const data =
             await response.json();
 
-
-        if (response.ok) {
+        if (response.ok && data.answer) {
 
             aiMessage.textContent =
                 data.answer;
@@ -1068,10 +1056,9 @@ async function askAI() {
 
             aiMessage.textContent =
                 data.message ||
-                "Something went wrong.";
+                "Sorry, I could not get an AI response.";
 
         }
-
 
     }
 
@@ -1082,20 +1069,46 @@ async function askAI() {
             error
         );
 
-
         aiMessage.textContent =
-            "Unable to connect to the AI Assistant.";
+            "Unable to connect to the AI Assistant. Please try again.";
 
     }
-
 
     /* Scroll to latest message */
 
     chatMessages.scrollTop =
         chatMessages.scrollHeight;
-
 }
 
+
+/* =====================================
+   PRESS ENTER TO SEND
+===================================== */
+
+const aiQuestionInput =
+    document.getElementById("aiQuestion");
+
+if (aiQuestionInput) {
+
+    aiQuestionInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter" &&
+                !event.shiftKey
+            ) {
+
+                event.preventDefault();
+
+                askAI();
+
+            }
+
+        }
+    );
+
+}
 
 /* =====================================
    RESUME TRANSLATOR
