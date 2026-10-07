@@ -58,7 +58,7 @@ app.post("/analyse", (req, res) => {
 
 
 // =====================================
-// AI ASSISTANT - REAL AI
+// AI ASSISTANT
 // =====================================
 
 app.post("/ai-assistant", async (req, res) => {
@@ -94,7 +94,6 @@ app.post("/ai-assistant", async (req, res) => {
             input: question
 
         });
-
 
         res.json({
 
@@ -138,7 +137,9 @@ app.post("/translate", async (req, res) => {
         req.body.targetLanguage;
 
 
-    // Check resume text
+    // =====================================
+    // CHECK INPUT
+    // =====================================
 
     if (!text) {
 
@@ -152,8 +153,6 @@ app.post("/translate", async (req, res) => {
     }
 
 
-    // Check languages
-
     if (!sourceLanguage || !targetLanguage) {
 
         return res.status(400).json({
@@ -166,7 +165,9 @@ app.post("/translate", async (req, res) => {
     }
 
 
-    // Same language
+    // =====================================
+    // SAME LANGUAGE
+    // =====================================
 
     if (sourceLanguage === targetLanguage) {
 
@@ -179,177 +180,49 @@ app.post("/translate", async (req, res) => {
     }
 
 
-    // =====================================
-    // LANGUAGE CODES
-    // =====================================
-
-    const languageCodes = {
-
-        English: "en",
-        Tamil: "ta",
-        Malayalam: "ml",
-        Hindi: "hi",
-        Korean: "ko",
-        Japanese: "ja",
-        French: "fr",
-        German: "de",
-        Spanish: "es",
-        Arabic: "ar"
-
-    };
-
-
-    const sourceCode =
-        languageCodes[sourceLanguage];
-
-    const targetCode =
-        languageCodes[targetLanguage];
-
-
-    // Check supported languages
-
-    if (!sourceCode || !targetCode) {
-
-        return res.status(400).json({
-
-            message:
-                "Unsupported language"
-
-        });
-
-    }
-
-
     try {
 
         // =====================================
-        // SPLIT LONG RESUME
+        // TRANSLATION USING OPENAI
         // =====================================
 
-        const chunks = [];
+        const response = await client.responses.create({
 
-        let remaining = text;
+            model: "gpt-6-luna",
 
+            instructions:
+                "You are a professional resume translator. " +
+                "Translate the user's text from the specified source language " +
+                "to the specified target language. " +
+                "Preserve the original meaning, formatting, headings, " +
+                "bullet points, names, technical terms, company names, " +
+                "email addresses, URLs and numbers. " +
+                "Do not add explanations, comments or extra information. " +
+                "Return only the translated text.",
 
-        while (remaining.length > 0) {
+            input:
+                "Source language: " +
+                sourceLanguage +
+                "\nTarget language: " +
+                targetLanguage +
+                "\n\nText to translate:\n" +
+                text
 
-            let chunk =
-                remaining.substring(0, 400);
-
-
-            if (remaining.length > 400) {
-
-                const lastSpace =
-                    chunk.lastIndexOf(" ");
-
-
-                if (lastSpace > 0) {
-
-                    chunk =
-                        chunk.substring(
-                            0,
-                            lastSpace
-                        );
-
-                }
-
-            }
-
-
-            chunks.push(chunk);
-
-
-            remaining =
-                remaining
-                    .substring(chunk.length)
-                    .trim();
-
-        }
+        });
 
 
         // =====================================
-        // TRANSLATE EACH CHUNK
-        // =====================================
-
-        const translatedChunks = [];
-
-
-        for (const chunk of chunks) {
-
-            const url =
-                "https://translate.googleapis.com/translate_a/single" +
-                "?client=gtx" +
-                "&sl=" + sourceCode +
-                "&tl=" + targetCode +
-                "&dt=t" +
-                "&q=" +
-                encodeURIComponent(chunk);
-
-
-            const response =
-                await fetch(url);
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Translation API failed"
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            let translated = "";
-
-
-            if (data && data[0]) {
-
-                for (const part of data[0]) {
-
-                    if (part[0]) {
-
-                        translated += part[0];
-
-                    }
-
-                }
-
-            }
-
-
-            if (!translated) {
-
-                throw new Error(
-                    "No translation received"
-                );
-
-            }
-
-
-            translatedChunks.push(
-                translated
-            );
-
-        }
-
-
-        // =====================================
-        // SEND RESULT
+        // SEND TRANSLATION
         // =====================================
 
         res.json({
 
             translation:
-                translatedChunks.join("\n\n")
+                response.output_text
 
         });
 
     }
-
 
     catch (error) {
 
@@ -357,7 +230,6 @@ app.post("/translate", async (req, res) => {
             "Translation Error:",
             error
         );
-
 
         res.status(500).json({
 
