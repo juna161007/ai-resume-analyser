@@ -244,6 +244,109 @@ app.post("/translate", async (req, res) => {
 
 
 // =====================================
+// FEEDBACK API
+// =====================================
+
+app.post("/feedback", (req, res) => {
+
+    try {
+
+        const {
+            name,
+            role,
+            rating,
+            feedback
+        } = req.body;
+
+
+        // Check required fields
+
+        if (
+            !name ||
+            !role ||
+            !rating ||
+            !feedback
+        ) {
+
+            return res.status(400).json({
+
+                message:
+                    "Name, role, rating and feedback are required."
+
+            });
+
+        }
+
+
+        // Check rating
+
+        if (
+            Number(rating) < 1 ||
+            Number(rating) > 5
+        ) {
+
+            return res.status(400).json({
+
+                message:
+                    "Rating must be between 1 and 5."
+
+            });
+
+        }
+
+
+        // Display feedback in Render logs
+
+        console.log("=================================");
+        console.log("NEW FEEDBACK");
+        console.log("=================================");
+
+        console.log({
+
+            name: name,
+
+            role: role,
+
+            rating: rating,
+
+            feedback: feedback,
+
+            date: new Date().toISOString()
+
+        });
+
+
+        res.json({
+
+            message:
+                "Feedback submitted successfully."
+
+        });
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Feedback Error:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            message:
+                "Unable to submit feedback."
+
+        });
+
+    }
+
+});
+
+
+// =====================================
 // START SERVER
 // =====================================
 
