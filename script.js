@@ -1239,3 +1239,188 @@ async function translateResume() {
     }
 
 }
+// ===============================
+// FEEDBACK RATING
+// ===============================
+
+let selectedRating = 0;
+
+function setRating(rating) {
+
+    selectedRating = rating;
+
+    const stars = document.querySelectorAll(".star");
+
+    stars.forEach((star, index) => {
+
+        if (index < rating) {
+            star.classList.add("selected");
+        } else {
+            star.classList.remove("selected");
+        }
+
+    });
+
+    document.getElementById("ratingText").textContent =
+        rating + " out of 5 stars selected";
+
+}
+
+
+// ===============================
+// SUBMIT FEEDBACK
+// ===============================
+
+async function submitFeedback() {
+
+    const name =
+        document.getElementById("feedbackName").value.trim();
+
+    const role =
+        document.getElementById("feedbackRole").value;
+
+    const feedback =
+        document.getElementById("feedbackMessage").value.trim();
+
+    const status =
+        document.getElementById("feedbackStatus");
+
+
+    // Check name
+    if (!name) {
+
+        status.textContent =
+            "⚠️ Please enter your name.";
+
+        return;
+    }
+
+
+    // Check role
+    if (!role) {
+
+        status.textContent =
+            "⚠️ Please select your role.";
+
+        return;
+    }
+
+
+    // Check rating
+    if (selectedRating === 0) {
+
+        status.textContent =
+            "⚠️ Please select a rating.";
+
+        return;
+    }
+
+
+    // Check feedback
+    if (!feedback) {
+
+        status.textContent =
+            "⚠️ Please write your feedback.";
+
+        return;
+    }
+
+
+    status.textContent =
+        "⏳ Submitting feedback...";
+
+
+    try {
+
+        const response = await fetch(
+            "https://ai-resume-analyser-1cpz.onrender.com/feedback",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    name: name,
+
+                    role: role,
+
+                    rating: selectedRating,
+
+                    feedback: feedback
+
+                })
+
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (response.ok) {
+
+            status.textContent =
+                "✅ Thank you! Your feedback has been submitted.";
+
+
+            // Clear form
+
+            document.getElementById(
+                "feedbackName"
+            ).value = "";
+
+            document.getElementById(
+                "feedbackRole"
+            ).value = "";
+
+            document.getElementById(
+                "feedbackMessage"
+            ).value = "";
+
+
+            // Reset rating
+
+            selectedRating = 0;
+
+            document.querySelectorAll(
+                ".star"
+            ).forEach(star => {
+
+                star.classList.remove(
+                    "selected"
+                );
+
+            });
+
+
+            document.getElementById(
+                "ratingText"
+            ).textContent =
+                "Select your rating";
+
+
+        } else {
+
+            status.textContent =
+                "❌ " +
+                (data.message ||
+                "Unable to submit feedback.");
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Feedback error:",
+            error
+        );
+
+        status.textContent =
+            "❌ Unable to connect to the server.";
+
+    }
+
+}

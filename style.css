@@ -1366,3 +1366,248 @@ footer {
     }
 
 }
+/* ===============================
+   FEEDBACK SECTION
+================================ */
+
+.feedback-section {
+
+    width: 100%;
+    padding: 60px 20px;
+
+    display: flex;
+    justify-content: center;
+
+}
+
+.feedback-card {
+
+    width: 100%;
+    max-width: 650px;
+
+    background: #0d1b2a;
+
+    border: 1px solid #00e5ff55;
+
+    border-radius: 20px;
+
+    padding: 35px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 40px rgba(0, 229, 255, 0.08);
+
+}
+
+.feedback-card h2 {
+
+    color: #00e5ff;
+
+    margin-bottom: 10px;
+
+    font-size: 28px;
+
+}
+
+.feedback-card p {
+
+    color: #a9b7c6;
+
+    margin-bottom: 20px;
+
+}
+
+.rating {
+
+    margin: 20px 0;
+
+}
+
+.star {
+
+    font-size: 40px;
+
+    color: #555;
+
+    cursor: pointer;
+
+    margin: 4px;
+
+    transition: 0.2s;
+
+}
+
+.star:hover {
+
+    color: #ffd700;
+
+    transform: scale(1.1);
+
+}
+
+.star.active {
+
+    color: #ffd700;
+
+}
+
+#feedbackMessage,
+#feedbackEmail {
+
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid #334155;
+
+    background: #07111f;
+
+    color: white;
+
+    font-size: 15px;
+
+    outline: none;
+
+}
+
+#feedbackMessage {
+
+    resize: vertical;
+
+}
+
+.feedback-btn {
+
+    margin-top: 20px;
+
+    padding: 14px 28px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #00a8cc;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+.feedback-btn:hover {
+
+    background: #008fb3;
+
+    transform: translateY(-2px);
+
+}
+
+#feedbackStatus {
+
+    margin-top: 20px;
+
+    font-weight: bold;
+
+}
+/* ===============================
+   FEEDBACK SECTION
+================================ */
+
+.feedback-section {
+    width: 100%;
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.feedback-card {
+    width: 100%;
+    max-width: 650px;
+    background: #0d1b2a;
+    border: 1px solid #00e5ff55;
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 229, 255, 0.08);
+}
+
+.feedback-card h2 {
+    color: #00e5ff;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.feedback-card p {
+    color: #a9b7c6;
+    margin-bottom: 20px;
+}
+
+.rating {
+    margin: 20px 0;
+}
+
+.star {
+    font-size: 40px;
+    color: #555;
+    cursor: pointer;
+    margin: 4px;
+    transition: 0.2s;
+}
+
+.star:hover {
+    color: #ffd700;
+    transform: scale(1.1);
+}
+
+.star.active {
+    color: #ffd700;
+}
+
+#feedbackMessage,
+#feedbackEmail {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background: #07111f;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+#feedbackMessage {
+    resize: vertical;
+}
+
+.feedback-btn {
+    margin-top: 20px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    background: #00a8cc;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.feedback-btn:hover {
+    background: #008fb3;
+    transform: translateY(-2px);
+}
+
+#feedbackStatus {
+    margin-top: 20px;
+    font-weight: bold;
+}
