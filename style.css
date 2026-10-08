@@ -1611,3 +1611,10 @@ footer {
     margin-top: 20px;
     font-weight: bold;
 }
+/* JK Logo */
+.jk-logo {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    display: block;
+}
